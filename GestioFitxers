@@ -1,0 +1,72 @@
+package eac6p2;
+
+
+
+
+
+import java.io.File;
+
+public class GestioFitxers {
+
+     public void mostrarDirectori(File directori) {
+        try {
+            if (!directori.exists()) {
+                System.out.println("El directori ja no existeix o no s'ha establert");
+                return;
+            }
+            File[] files = directori.listFiles();
+            if (files.length == 0) {
+                System.out.println("El directori no té fitxers");
+            } else {
+                System.out.println("Fitxers del directori " + directori);
+                for (int i = 0; i < files.length; i++) {
+                    File f = files[i];
+                    if (f.isDirectory()) {
+                        System.out.print("[DIR]");
+                    } else {
+                        System.out.print("[FIT]");
+                    }
+                    System.out.print(f.getName() + "\t");
+                    if (f.canRead()) {
+                        System.out.print("R");
+                    }
+                    if (f.canWrite()) {
+                        System.out.print("W");
+                    }
+                    if (f.canExecute()) {
+                        System.out.print("X");
+                    }
+                    System.out.println("");
+                }
+            }
+            if (!directori.exists()) {
+                System.out.println("Aquest directori no existeix");
+            }
+        } catch (Exception e) {
+            System.out.println("S'ha produït l'error: " + e.getMessage());
+        }
+    }
+
+    public void canviarNomFitxer(File directori, String nomFitxerOrigen, String nomFitxerDesti) {
+        try {
+            File nomOrigen = new File(directori + File.separator + nomFitxerOrigen);
+            String nouNom = nomOrigen.getParent() + File.separator + nomFitxerDesti;
+            File rutaDesti = new File(nouNom);
+            nomOrigen.renameTo(rutaDesti);
+
+        } catch (Exception e) {
+            System.out.println("S'ha produït l'error: " + e.getMessage());
+        }
+    }
+
+    public void canviarDeLlocFitxer(File directoriOrigen, File directoriDesti, String nomFitxer) {
+        try {
+            File nomOrigen = new File(directoriOrigen + File.separator + nomFitxer);
+            File nomDesti = new File(directoriDesti + File.separator + nomFitxer);
+            nomOrigen.renameTo(nomDesti);
+        } catch (Exception e) {
+            System.out.println("S'ha produït l'error: " + e.getMessage());
+        }
+    }
+
+}
