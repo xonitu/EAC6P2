@@ -146,7 +146,7 @@ public class ASX_M03B2_EAC6P2_Hidalgo_S {
 			BufferedWriter bw = new BufferedWriter(fw);
 			for (int i = 0; i < array.length; i++) {
 				String lineaWr = "";
-				for (int j = 0; j < array.length; j++) {
+				for (int j = 0; j < array[0].length; j++) {
 					if (array[i][j].equals("")) {
 						lineaWr += " ";
 					} else {
