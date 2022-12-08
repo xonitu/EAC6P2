@@ -1,0 +1,285 @@
+package eac6p2;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+public class ASX_M03B2_EAC6P2_Hidalgo_S {
+
+    static Scanner teclat = new Scanner(System.in);
+    File directori = new File("C:/temp");
+    GestioFitxers gFitxers = new GestioFitxers();
+
+    public static void main(String[] args) {
+        ASX_M03B2_EAC6P2_Hidalgo_S prg = new ASX_M03B2_EAC6P2_Hidalgo_S();
+        prg.inici();
+    }
+
+    private void inici() {
+        String[][] registre = {
+            //  usuari  NIF DATA_ALTA  DATA_BAIXA
+            {"rgalvez", "99888777Z", "02/01/2020", ""},
+            {"jpuig", "11222333A", "10/02/2020", "10/05/2020"},
+            {"rsoto", "45821635K", "15/02/2020", "15/05/2020"},
+            {"agarcia", "88111666S", "20/02/2020", "20/02/2021"},
+            {"fgarcia", "34985423A", "25/03/2020", "25/09/2020"},
+            {"rsoto", "45821635K", "01/04/2021", ""},
+            {"jpuig", "11222333A", "15/04/2021", ""},
+            {"ralonso", "22333444B", "10/05/2021", ""},
+            {"fgarcia", "34985423A", "01/06/2021", "30/09/2021"},
+            {"efuster", "33444555C", "08/06/2021", "08/10/2021"},
+            {"sfont", "44555666D", "10/06/2021", "10/11/2021"},
+            {"msoler", "55666777E", "15/06/2021", ""},
+            {"efuster", "33444555C", "01/02/2022", ""},
+            {"sferrer", "66777888F", "10/02/2022", ""},
+            {"jcasas", "77888999G", "01/03/2022", ""},
+            {"", "", "", ""},
+            {"", "", "", ""},
+            {"", "", "", ""},
+            {"", "", "", ""},
+            {"", "", "", ""},
+            {"", "", "", ""}};
+
+        // NIF  USUARI  NOM
+        String[][] treballadors = {{"11222333A", "jpuig", "Josep Puig"},
+        {"34985423A", "fgarcia", "Francesc Garcia"}, {"", "", ""}, {"", "", ""}, {"", "", ""}, {"", "", ""}, {"", "", ""}, {"", "", ""}};
+
+        subMenuGestioFitxers(registre, treballadors);
+    }
+
+    private void subMenuGestioFitxers(String[][] registre, String[][] treballadors) {
+        String opcio = "";
+        while (!opcio.equals("0")) {
+            teclat = new Scanner(System.in);
+            System.out.println("\nGestió fitxers");
+            System.out.println("==============");
+            System.out.println("1 Establir ruta per defecte o de treball");
+            System.out.println("2 Mostrar directori");
+            System.out.println("3 Canviar permisos d'escriptura d'un fitxer ");
+            System.out.println("4 Canviar de lloc un fitxer ");
+            System.out.println("");
+            System.out.println("5 Gravar array en un fitxer");
+            System.out.println("6 Carregar dades a l'array des de un fitxer");
+            System.out.println("7 Esborrar les dades d'un array");
+            System.out.println("8 Mostrar les dades del registre");
+            System.out.println("0 Sortir ");
+            System.out.print("Entra una opcio:");
+            opcio = teclat.nextLine();
+
+            switch (opcio) {
+                case "1":
+                    entrarDirectoriTreball();
+                    break;
+                case "2":
+                    gFitxers.mostrarDirectori(directori);
+                    break;
+                case "3":
+                    canviarPermisos();
+                case "4":
+                    entrarDadesCanviarDeLloc();
+                    break;
+                case "5":
+                    switch (getNomArray()) {
+                        case "1":
+                            gravarArray(registre);
+                            break;
+                        case "2":
+                            gravarArray(treballadors);
+                            break;
+                    }
+                    break;
+                case "6":
+                    switch (getNomArray()) {
+                        case "1":
+                            inicialitzarArray(registre);
+                            llegirArray(registre);
+                            break;
+                        case "2":
+                            inicialitzarArray(treballadors);
+                            llegirArray(treballadors);
+                            break;
+                    }
+
+                    break;
+                case "7":
+                    switch (getNomArray()) {
+                        case "1":
+                            inicialitzarArray(registre);
+                            break;
+                        case "2":
+                            inicialitzarArray(treballadors);
+                            break;
+                    }
+                    break;
+                case "8":
+                    mostrarArrays(registre, treballadors);
+                    break;
+                case "0":
+                    break;
+            }
+        }
+
+    }
+
+    String getNomArray() {
+    	System.out.println("");
+        System.out.println("Escull array; ");
+        System.out.println("1) Registre ");
+        System.out.println("2) Treballadors ");
+        System.out.print("Resposta; ");
+        String opcio = "";
+        do {
+            opcio = teclat.nextLine();
+        } while (!"12".contains(opcio));
+        return opcio;
+    }
+
+	void gravarArray(String[][] array) {
+		System.out.print("Intro nom arxiu;");
+		String nomArxiu = teclat.nextLine();
+		File arxiu = new File(directori, nomArxiu);
+		try {
+			FileWriter fw = new FileWriter(arxiu);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (int i = 0; i < array.length; i++) {
+				String lineaWr = "";
+				for (int j = 0; j < array.length; j++) {
+					if (array[i][j].equals("")) {
+						lineaWr += " ";
+					} else {
+						lineaWr += array[i][j];
+					}
+					if (j != array[0].length - 1) {
+						lineaWr += ",";
+					} else {
+						lineaWr += "\n";
+					}
+				}
+				bw.write(lineaWr);
+
+			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+                
+	void llegirArray(String[][] array) {
+		String linea = "";
+		System.out.print("Intro arxiu per carregar; ");		
+		String nomArxiu = teclat.nextLine();
+		File arxiu = new File(directori, nomArxiu);
+		BufferedReader br = null;
+		int i = 0;
+		try {
+			br = new BufferedReader(new FileReader(arxiu));
+			while ((linea = br.readLine()) != null) {
+				String[] contingutFila = linea.split(",");
+				for (int j = 0; j < array[0].length; j++) {
+					array[i][j] = contingutFila[j];
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			System.out.println("error " + e);
+		}
+	}
+    void inicialitzarArray(String[][] array) {
+        for (int fila = 0; fila < array.length; fila++) {
+            for (int col = 0; col < array[0].length; col++) {
+                array[fila][col] = "";
+            }
+        }
+    }
+
+    /**
+     * Mètode que mostra el registre
+     *
+     * @param registre
+     */
+    void mostrarArrays(String[][] registre, String[][] treballadors) {
+        System.out.print("Usuari\tDni\t\tAlta\t\tBaixa\n");
+        mostrarArray(registre);
+        System.out.print("\nNif\tUsuari\tNom\n");
+        mostrarArray(treballadors);
+    }
+
+    void mostrarArray(String[][] array) {
+        for (int fila = 0; fila < array.length; fila++) {
+            if (!array[fila][0].trim().equals("")) {
+                for (int col = 0; col < array[0].length; col++) {
+
+                    System.out.print(array[fila][col] + "\t");
+
+                }
+                System.out.println("");
+            }
+        }
+    }
+
+    private void entrarDirectoriTreball() {
+        String ruta = "";
+        try {
+            System.out.println("Entra la ruta per defecte: ");
+            ruta = teclat.nextLine();
+            directori = new File(ruta);
+            if (!directori.exists()) {
+                System.out.println("Aquest directori no existeix");
+            }
+        } catch (Exception e) {
+            System.out.println("S'ha produït l'error: " + e.getMessage());
+        }
+    }
+
+    private void canviarPermisos() {
+        String opcio = "";
+        String fitxer = "";
+        System.out.println("El directori actual es " + directori.getPath());
+        System.out.println("Entra el nom del fitxer: ");
+        fitxer = teclat.nextLine();
+        File fFitxer = new File(directori + File.separator + fitxer);
+        if (!fFitxer.exists()) {
+            System.out.println("El fitxer no existeix");
+            return;
+        }
+        System.out.println("Abans del canvi:");
+        System.out.println("(W) Permís d'escriptura: " + fFitxer.canWrite());
+        if (fFitxer.canWrite()) {
+            fFitxer.setWritable(false);
+        } else {
+            fFitxer.setWritable(true);
+        }
+        System.out.println("\nDesprès del canvi:");
+        System.out.println("(W) Permís d'escriptura: " + fFitxer.canWrite());
+
+    }
+
+    private void entrarDadesCanviarDeLloc() {
+        String desti = "";
+        String fitxer = "";
+        System.out.println("El directori actual es " + directori.getPath());
+        System.out.println("Entra el nom del fitxer: ");
+        fitxer = teclat.nextLine();
+        System.out.println("Entra el nou directori: ");
+        desti = teclat.nextLine();
+        File nouDirectori = new File(desti);
+        System.out.println("Es correcte (s/n)");
+        if (teclat.nextLine().equalsIgnoreCase("S")) {
+            if (!nouDirectori.exists()) {
+                System.out.print("Aquest directori no existeix, el vols crear? (s/n) ");
+                if (teclat.nextLine().equalsIgnoreCase("S")) {
+                    if (nouDirectori.mkdir()) {
+                        gFitxers.canviarDeLlocFitxer(directori, nouDirectori, fitxer);
+                    } else {
+                        System.out.println("El directori no s'ha creat");
+                    }
+
+                }
+            }
+        }
+    }
+}
